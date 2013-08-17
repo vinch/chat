@@ -1,0 +1,16 @@
+{
+  "name": "chat",
+  "version": "0.0.0",
+  "description": "Simple chat using Socket.IO",
+  "main": "index.coffee",
+  "dependencies": {
+    "express": "~3.3.5",
+    "socket.io": "~0.9.16",
+    "connect-assets": "~2.5.2",
+    "jade": "~0.34.1",
+    "stylus": "~0.36.1",
+    "coffee-script": "~1.6.3",
+    "nib": "~1.0.0",
+    "underscore.string": "~2.3.3"
+  }
+}
