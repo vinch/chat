@@ -22,7 +22,7 @@ $ ->
     Chat.from = prompt('What\'s your nickname?')
     break if Chat.from
 
-  socket = io.connect 'http://192.168.1.22:8080'
+  socket = io.connect window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
 
   $('input').focus().keyup (e) ->
     if e.keyCode == 13
