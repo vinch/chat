@@ -27,4 +27,4 @@ io.sockets.on 'connection', (socket) ->
       content: _s.escapeHTML(_s.trim(data.content))
     }
 
-server.listen 8080
+server.listen process.env.PORT || 8080
