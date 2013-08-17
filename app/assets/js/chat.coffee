@@ -4,9 +4,9 @@ unless String::trim
   String::trim = ->
     @replace /^\s+|\s+$/g, ''
 
-unless String::stripTags
-  String::stripTags = ->
-    @replace /(<([^>]+)>)/ig, ''
+unless String::escapeHTML
+  String::escapeHTML = ->
+    @replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/, '&apos;').replace(/"/, '&quot;')
 
 # Chat
 
@@ -26,13 +26,13 @@ $ ->
 
   $('input').focus().keyup (e) ->
     if e.keyCode == 13
-      content = $(this).val().trim().stripTags() # this is done on the server as well FYI
+      content = $(this).val()
       unless content == ''
         socket.emit 'new', {
           from: Chat.from
           content: content
         }
-        Chat.displayMessage Chat.from, content
+        Chat.displayMessage Chat.from, content.trim().escapeHTML() # this is done on the server as well FYI
       $(this).val('')
 
   socket.on 'message', (data) ->

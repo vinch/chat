@@ -24,7 +24,7 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'new', (data) ->
     socket.broadcast.emit 'message', {
       from: data.from
-      content: _s.stripTags(_s.trim(data.content))
+      content: _s.escapeHTML(_s.trim(data.content))
     }
 
 server.listen 8080
