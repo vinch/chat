@@ -39,8 +39,8 @@ $ ->
     from: Chat.nickname
   }
   Chat.joined 'You'
-
-  $(window).unload ->
+    
+  $(window).on 'unload', ->
     socket.emit 'left', {
       from: Chat.nickname
     }
