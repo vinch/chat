@@ -12,28 +12,57 @@ unless String::escapeHTML
 
 window.Chat = {}
 
-Chat.displayMessage = (from, content) ->
+Chat.item = (content, classNames) ->
   $el = $('#conversation')
-  $el.append('<li><strong>' + from + ' </strong> · ' + content + '</li>')
+  $el.append('<li class="' + classNames.join(' ') + '">' + content + '</li>')
   $el.scrollTop $el[0].scrollHeight
+
+Chat.message = (nickname, content) ->
+  @item '<strong>' + nickname + '</strong>&nbsp;&#8212;&nbsp;' + content, ['message']
+
+Chat.joined = (nickname) ->
+  @item nickname + ' joined the room', ['notification']
+
+Chat.left = (nickname) ->
+  @item nickname + ' left the room', ['notification']
 
 $ ->
   loop
-    Chat.from = prompt('What\'s your nickname?')
-    break if Chat.from
+    Chat.nickname = prompt('What\'s your nickname?')
+    break if Chat.nickname
 
   socket = io.connect window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
+
+  # Events sent
+
+  socket.emit 'joined', {
+    from: Chat.nickname
+  }
+  Chat.joined 'You'
+
+  $(window).unload ->
+    socket.emit 'left', {
+      from: Chat.nickname
+    }
 
   $('input').focus().keyup (e) ->
     if e.keyCode == 13
       content = $(this).val()
       unless content == ''
-        socket.emit 'new', {
-          from: Chat.from
+        socket.emit 'message', {
+          from: Chat.nickname
           content: content
         }
-        Chat.displayMessage Chat.from, content.trim().escapeHTML() # this is done on the server as well FYI
+        Chat.message Chat.nickname.trim().escapeHTML(), content.trim().escapeHTML()
       $(this).val('')
 
+  # Events received
+
   socket.on 'message', (data) ->
-    Chat.displayMessage data.from, data.content
+    Chat.message data.from, data.content
+
+  socket.on 'joined', (data) ->
+    Chat.joined data.from
+
+  socket.on 'left', (data) ->
+    Chat.left data.from

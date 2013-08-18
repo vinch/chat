@@ -20,11 +20,22 @@ app.configure () ->
 app.get '/', (req, res) ->
   res.render 'chat'
 
+safe = (str) ->
+  return _s.escapeHTML(_s.trim(str))
+
 io.sockets.on 'connection', (socket) ->
-  socket.on 'new', (data) ->
+  socket.on 'message', (data) ->
     socket.broadcast.emit 'message', {
-      from: data.from
-      content: _s.escapeHTML(_s.trim(data.content))
+      from: safe data.from
+      content: safe data.content
+    }
+  socket.on 'joined', (data) ->
+    socket.broadcast.emit 'joined', {
+      from: safe data.from
+    }
+  socket.on 'left', (data) ->
+    socket.broadcast.emit 'left', {
+      from: safe data.from
     }
 
 server.listen process.env.PORT || 8080
