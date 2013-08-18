@@ -8,7 +8,7 @@ server = http.createServer app
 io = require('socket.io').listen server
 
 safe = (str) ->
-    return _s.escapeHTML(_s.trim(str))
+  return _s.escapeHTML(_s.trim(str))
 
 app.configure () ->
   app.set 'views', __dirname + '/app/views'
