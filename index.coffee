@@ -35,7 +35,6 @@ io.sockets.on 'connection', (socket) ->
       from: safe data.from
     }
   socket.on 'left', (data) ->
-    console.log 'LEFT'
     socket.broadcast.emit 'left', {
       from: safe data.from
     }
