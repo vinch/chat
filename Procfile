@@ -1,1 +1,1 @@
-web: coffee index.coffee
+web: NODE_ENV=production coffee index.coffee

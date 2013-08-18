@@ -10,7 +10,7 @@ io = require('socket.io').listen server
 safe = (str) ->
   return _s.escapeHTML(_s.trim(str))
 
-app.configure () ->
+app.configure ->
   app.set 'views', __dirname + '/app/views'
   app.set 'view engine', 'jade'
   app.use express.favicon __dirname + '/public/img/favicon.ico'
@@ -20,7 +20,9 @@ app.configure () ->
     buildDir: 'public'
   }
 
-io.configure ->
+# Heroku setup
+
+io.configure 'production', ->
   io.set 'transports', ['xhr-polling']
   io.set 'polling duration', 10
 
