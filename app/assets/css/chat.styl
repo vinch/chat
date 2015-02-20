@@ -34,6 +34,7 @@ body
     font-size: 30px
     font-family: "Helvetica", "Arial", sans-serif
     padding: 0 15px
+    -webkit-appearance: none
     &:focus
       background: yellow
 
@@ -53,3 +54,15 @@ body
         border: 0
       &.notification
         color: grayer
+
+@media only screen and (max-width : 800px)
+  body
+    input
+      height: 50px
+      font-size: 20px
+      padding: 0 10px
+    #conversation
+      padding-bottom: 50px
+      li
+        font-size: 20px
+        padding: 10px
