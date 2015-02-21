@@ -26,12 +26,22 @@ Chat.joined = (nickname) ->
 Chat.left = (nickname) ->
   @item nickname + ' left the room', ['notification']
 
+Chat.sendMessage = ->
+  content = $('input').val()
+  unless content == ''
+    socket.emit 'message', {
+      from: Chat.nickname
+      content: content
+    }
+    Chat.message Chat.nickname.trim().escapeHTML(), content.trim().escapeHTML()
+  $('input').val('')
+
 $ ->
   loop
     Chat.nickname = prompt('What\'s your nickname?')
     break if Chat.nickname
 
-  socket = io.connect window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
+  window.socket = io.connect window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
 
   # Events sent
 
@@ -47,14 +57,10 @@ $ ->
 
   $('input').focus().keyup (e) ->
     if e.keyCode == 13
-      content = $(this).val()
-      unless content == ''
-        socket.emit 'message', {
-          from: Chat.nickname
-          content: content
-        }
-        Chat.message Chat.nickname.trim().escapeHTML(), content.trim().escapeHTML()
-      $(this).val('')
+      Chat.sendMessage()
+
+  $('button').click (e) ->
+    Chat.sendMessage()
 
   # Events received
 
