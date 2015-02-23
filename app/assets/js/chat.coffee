@@ -37,6 +37,8 @@ Chat.sendMessage = ->
   $('input').val('')
 
 $ ->
+  FastClick.attach document.body
+
   loop
     Chat.nickname = prompt('What\'s your nickname?')
     break if Chat.nickname
