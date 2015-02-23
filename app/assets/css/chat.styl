@@ -45,9 +45,6 @@ body
       cursor: pointer
       color: darkgray
       text-align: center
-      &:hover
-        background: grayer
-        color: lightgray
 
   #conversation
     padding-bottom: 80px
@@ -60,6 +57,13 @@ body
         border: 0
       &.notification
         color: grayer
+
+body.no-touch
+  #message
+    button
+      &:hover
+        background: grayer
+        color: lightgray
 
 @media only screen and (max-width : 800px)
   body

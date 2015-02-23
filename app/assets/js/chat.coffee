@@ -40,6 +40,9 @@ Chat.sendMessage = ->
 $ ->
   FastClick.attach document.body
 
+  if 'ontouchstart' in document
+    $('body').removeClass('no-touch')
+
   loop
     Chat.nickname = prompt('What\'s your nickname?')
     break if Chat.nickname
