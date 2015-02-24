@@ -40,7 +40,7 @@ Chat.sendMessage = ->
 $ ->
   FastClick.attach document.body
 
-  if 'ontouchstart' in document
+  if Modernizr.touch
     $('body').removeClass('no-touch')
 
   loop
