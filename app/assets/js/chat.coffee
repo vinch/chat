@@ -68,6 +68,12 @@ $ ->
   $('button').click (e) ->
     Chat.sendMessage()
 
+  $('input').focus (e) ->
+    $('#message').addClass('absolute')
+
+  $('input').blur (e) ->
+    $('#message').removeClass('absolute')
+
   # Events received
 
   socket.on 'message', (data) ->
