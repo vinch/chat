@@ -14,9 +14,8 @@ window.Chat = {}
 
 Chat.item = (content, classNames) ->
   $el = $('#conversation')
-  $body = $('body')
   $el.append('<li class="' + classNames.join(' ') + '">' + content + '</li>')
-  $body.scrollTop $body[0].scrollHeight
+  $el.scrollTop $el[0].scrollHeight
 
 Chat.message = (nickname, content) ->
   @item '<strong>' + nickname + '</strong>&nbsp;&#8212;&nbsp;' + content, ['message']

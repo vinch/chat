@@ -11,6 +11,11 @@ darkgray = #666
   box-sizing: border-box
   -webkit-font-smoothing: antialiased
 
+html, body
+  width: 100%
+  height: 100%
+  overflow: hidden
+
 body
   font-family: "Helvetica", "Arial", sans-serif
   font-size: 62.5%
@@ -19,14 +24,12 @@ body
   background: lightgray
 
   #message
-    position: fixed
+    position: absolute
     bottom: 0
     width: 100%
     height: 80px
     border-top: 1px solid gray
     z-index: 100
-    &.absolute
-      position: absolute
     input, button
       -webkit-appearance: none
       display: block
@@ -49,6 +52,8 @@ body
       text-align: center
 
   #conversation
+    max-height: 100%
+    overflow: auto
     padding-bottom: 80px
     li
       font-size: 30px
