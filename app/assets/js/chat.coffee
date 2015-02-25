@@ -54,7 +54,11 @@ $ ->
     from: Chat.nickname
   }
   Chat.joined 'You'
-    
+  
+  $(window).on 'resize', ->
+    $el = $('#conversation')
+    $el.scrollTop $el[0].scrollHeight
+
   $(window).on 'unload', ->
     socket.emit 'left', {
       from: Chat.nickname
