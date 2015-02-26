@@ -17,23 +17,23 @@ Chat.item = (content, classNames) ->
   $el.append('<li class="' + classNames.join(' ') + '">' + content + '</li>')
   $el.scrollTop $el[0].scrollHeight
 
-Chat.message = (nickname, content) ->
-  @item '<strong>' + nickname + '</strong>&nbsp;&#8212;&nbsp;' + content, ['message']
+Chat.message = (user, content) ->
+  @item '<img src="' + user.picture + '" alt="' + user.nickname + '" /><strong>' + user.nickname + '</strong>&nbsp;&#8212;&nbsp;' + content, ['message']
 
-Chat.joined = (nickname) ->
-  @item nickname + ' joined the room', ['notification']
+Chat.joined = (user) ->
+  @item user.nickname + ' joined the room', ['notification']
 
-Chat.left = (nickname) ->
-  @item nickname + ' left the room', ['notification']
+Chat.left = (user) ->
+  @item user.nickname + ' left the room', ['notification']
 
 Chat.sendMessage = ->
   content = $('input').val()
   unless content == ''
     socket.emit 'message', {
-      from: Chat.nickname
+      from: Chat.user
       content: content
     }
-    Chat.message Chat.nickname.trim().escapeHTML(), content.trim().escapeHTML()
+    Chat.message Chat.user, content.trim().escapeHTML()
   $('input').val('').focus()
 
 $ ->
@@ -46,12 +46,15 @@ $ ->
     url: 'http://api.randomuser.me/'
     dataType: 'json'
     success: (data) ->
-      Chat.nickname = data.results[0].user.username
+      Chat.user = {
+        nickname: data.results[0].user.username
+        picture: data.results[0].user.picture.thumbnail
+      }
 
       socket.emit 'joined', {
-        from: Chat.nickname
+        from: Chat.user
       }
-      Chat.joined 'You'
+      Chat.joined Chat.user
 
       $('#message').removeClass('disabled')
       $('input').focus()
@@ -67,7 +70,7 @@ $ ->
 
   $(window).on 'unload', ->
     socket.emit 'left', {
-      from: Chat.nickname
+      from: Chat.user
     }
 
   $('input').keyup (e) ->
