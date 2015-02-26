@@ -42,18 +42,24 @@ $ ->
   if Modernizr.touch
     $('body').removeClass('no-touch')
 
-  loop
-    Chat.nickname = prompt('What\'s your nickname?')
-    break if Chat.nickname
+  $.ajax {
+    url: 'http://api.randomuser.me/'
+    dataType: 'json'
+    success: (data) ->
+      Chat.nickname = data.results[0].user.username
+
+      socket.emit 'joined', {
+        from: Chat.nickname
+      }
+      Chat.joined 'You'
+
+      $('#message').removeClass('disabled')
+      $('input').focus()
+  }
 
   window.socket = io.connect window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
 
   # Events sent
-
-  socket.emit 'joined', {
-    from: Chat.nickname
-  }
-  Chat.joined 'You'
   
   $(window).on 'resize', ->
     $el = $('#conversation')
@@ -64,18 +70,12 @@ $ ->
       from: Chat.nickname
     }
 
-  $('input').focus().keyup (e) ->
+  $('input').keyup (e) ->
     if e.keyCode == 13
       Chat.sendMessage()
 
   $('button').click (e) ->
     Chat.sendMessage()
-
-  $('input').focus (e) ->
-    $('#message').addClass('absolute')
-
-  $('input').blur (e) ->
-    $('#message').removeClass('absolute')
 
   # Events received
 
@@ -86,4 +86,4 @@ $ ->
     Chat.joined data.from
 
   socket.on 'left', (data) ->
-    Chat.left data.from
+    Chat.left data.fro
