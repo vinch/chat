@@ -34,7 +34,7 @@ Chat.sendMessage = ->
       content: content
     }
     Chat.message Chat.nickname.trim().escapeHTML(), content.trim().escapeHTML()
-  $('input').val('')
+  $('input').val('').focus()
 
 $ ->
   FastClick.attach document.body
